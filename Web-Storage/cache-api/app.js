@@ -8,13 +8,18 @@ button.addEventListener("click", async() => {
     console.count("👀 Button Clicked");
     //console.log(fetchData());
     setLoadStatus();
-    const poke = await fetchPokeData({pokeId: 1});
+    const poke = await fetchPokeData({
+        pokeId: randomPokeNumber()});
     showCharacterData(poke);
     console.log("✅ Finished");
 });
 
 function setLoadStatus(){
     header.textContent = 'Loading ...';
+}
+
+function randomPokeNumber(){
+    return Math.floor((Math.random() * 151) + 1);
 }
 
 function showCharacterData(pokemon){
