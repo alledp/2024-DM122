@@ -1,6 +1,6 @@
 const button = document.getElementById("fetchData");
 const header = document.querySelector('header');
-const output = document.querySelector('output');
+const image = document.querySelector('img');
 
 button.addEventListener("click", async() => {
     //console.log(event);
@@ -14,13 +14,13 @@ button.addEventListener("click", async() => {
 });
 
 function setLoadStatus(){
-    output.textContent = header.textContent = 'Loading ...';
+    header.textContent = 'Loading ...';
 }
 
-function showCharacterData(character){
-    console.log("Chamou a funcao SHOW CHARACTER " + character.name);
-    header.textContent = character.name;
-    output.textContent = JSON.stringify(character, null, 2);
+function showCharacterData(pokemon){
+    console.log("Chamou a funcao SHOW CHARACTER " + pokemon.name);
+    header.textContent = pokemon.name;
+    image.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
 }
 
 async function fetchPokeData({ pokeId }){
