@@ -1,19 +1,27 @@
 const button = document.getElementById("fetchData");
+const header = document.querySelector('header');
+const output = document.querySelector('output');
 
 button.addEventListener("click", (event) => {
     //console.log(event);
     //console.log("👀 Fetch Data Clicked");
     console.count("👀 Button Clicked");
     //console.log(fetchData());
-    fetchCharacterData({charId: 1});
-    fetchCharacterData({charId: 2});
-    fetchCharacterData({charId: 3});
-    fetchCharacterData({charId: 4});
-    fetchCharacterData({charId: 5});
-    fetchCharacterData({charId: 6});
+    setLoadStatus();
+    const character = fetchCharacterData({charId: 1});
+    showCharacterData(character);
     console.log("✅ Finished");
 
 });
+
+function setLoadStatus(){
+    output.textContent = header.textContent = 'Loading ...';
+}
+
+function showCharacterData(character){
+    header.textContent = character.name;
+    output.textContent = JSON.stringify(character, null, 2);
+}
 
 
 async function fetchCharacterData({ charId }){
@@ -23,5 +31,5 @@ async function fetchCharacterData({ charId }){
     const response = await fetch(endpoint);
     const character = await response.json();
     console.log(`Character name (${charId}): ${character.name}`);
-    //console.log(character);
+    return character;
 }
