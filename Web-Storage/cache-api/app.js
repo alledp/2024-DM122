@@ -26,18 +26,20 @@ function randomPokeNumber(){
 
 function showCharacterData(pokemon){
     header.textContent = pokemon.name;
-    image.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/
-    pokemon/other/official-artwork/${pokemon.id}.png`;
-    //loadPokeImage(pokemon);
+    loadPokeImage(pokemon);
 }
 
 async function loadPokeImage(pokemon){
-    //const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/
-    //pokemon/other/official-artwork/${pokemon.id}.png`;
+    //const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
 
-    //const response = await fetch
-    
-    //image.src
+    const endpoint = pokemon.sprites.other['official-artwork'].front_default;
+    const response = 
+        (await fetchFromCache(endpoint) || await fecthFromNetwork(endpoint));
+    const blob = await response.blob();
+    //display image from blob
+
+    const imageUrl = URL.createObjectURL(blob);
+    image.src = imageUrl;
 }
 
 async function fetchPokeData({ pokeId }){
@@ -48,9 +50,9 @@ async function fetchPokeData({ pokeId }){
     return pokemon;
 }
 
-// for(let i=1; i<=152; i++){
-//     fetchPokeData({pokeId: i});
-// }
+for(let i=1; i<=152; i++){
+    fetchPokeData({pokeId: i});
+}
 
 async function fecthFromNetwork(endpoint){
     const response = await fetch(endpoint);
@@ -63,17 +65,12 @@ async function fecthFromNetwork(endpoint){
 }
 
 async function fetchFromCache(endpoint){
-    const cache = await caches.open(`${CACHE_KEY}-JSON`);
+    const cache = await caches.open(CACHE_KEY);
     const response = await cache.match(endpoint);
     return response && (response);
 }
 
 async function addToCache(key, response){
-    const jsonCache = await caches.open(`${CACHE_KEY}-JSON`);
-    const imagesCache = await caches.open(`${CACHE_KEY}-IMAGES`);
+    const jsonCache = await caches.open(CACHE_KEY);
     jsonCache.put(key,response);
-    imagesCache.add( `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${key
-        .split('/')
-        .pop()}.png`
-    );
 }
