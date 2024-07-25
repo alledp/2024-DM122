@@ -25,15 +25,26 @@ function randomPokeNumber(){
 }
 
 function showCharacterData(pokemon){
-    console.log("Chamou a funcao SHOW CHARACTER " + pokemon.name);
     header.textContent = pokemon.name;
-    image.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
+    image.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/
+    pokemon/other/official-artwork/${pokemon.id}.png`;
+    //loadPokeImage(pokemon);
+}
+
+async function loadPokeImage(pokemon){
+    //const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/
+    //pokemon/other/official-artwork/${pokemon.id}.png`;
+
+    //const response = await fetch
+    
+    //image.src
 }
 
 async function fetchPokeData({ pokeId }){
     const endpoint = `https://pokeapi.co/api/v2/pokemon/${pokeId}`;
     console.log(`[fetchCharactedData] #${pokeId}`);
-    const pokemon = (await fetchFromCache(endpoint) || (await fecthFromNetwork(endpoint)));
+    const response = (await fetchFromCache(endpoint) || (await fecthFromNetwork(endpoint)));
+    const pokemon = await response.json();
     return pokemon;
 }
 
@@ -45,7 +56,7 @@ async function fecthFromNetwork(endpoint){
     const response = await fetch(endpoint);
     if(response.ok){
         addToCache(endpoint, response.clone());
-        return response.json();
+        return response;
     }else{
         throw new Error(`Not Able to request: ${endpoint}`);
     }
@@ -54,7 +65,7 @@ async function fecthFromNetwork(endpoint){
 async function fetchFromCache(endpoint){
     const cache = await caches.open(`${CACHE_KEY}-JSON`);
     const response = await cache.match(endpoint);
-    return response && (response.json());
+    return response && (response);
 }
 
 async function addToCache(key, response){
