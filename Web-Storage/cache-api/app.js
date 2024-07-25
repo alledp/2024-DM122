@@ -32,7 +32,13 @@ async function fetchPokeData({ pokeId }){
     const endpoint = `https://pokeapi.co/api/v2/pokemon/${pokeId}`;
     console.log(`[fetchCharactedData] #${pokeId}`);
     const response = await fetch(endpoint);
+    addToCache(endpoint, response.clone());
     const pokemon = await response.json();
     console.log(`Character name (${pokeId}): ${pokemon.name}`);
     return pokemon;
+}
+
+async function addToCache(key, response){
+    const cache = await caches.open('MY-POKE-CACHE-ID');
+    cache.put(key,response);
 }
