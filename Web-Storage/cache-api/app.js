@@ -41,4 +41,8 @@ async function fetchPokeData({ pokeId }){
 async function addToCache(key, response){
     const cache = await caches.open('MY-POKE-CACHE-ID');
     cache.put(key,response);
+    cache.add( `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${key
+        .split('/')
+        .pop()}.png`
+    );
 }
