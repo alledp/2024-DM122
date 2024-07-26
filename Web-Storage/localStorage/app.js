@@ -25,7 +25,10 @@ class App{
     listValues(){
         console.log("Listing data...");
         const ls = window.localStorage;
-        if(!ls.length) return;
+        if(!ls.length) {
+            this.resetTable();
+            return;
+        }
         const lsKeys = Object.keys(ls);
         const allValues = lsKeys.map(this.toHTML).join('');
         this.addToHTML(allValues);
@@ -37,7 +40,9 @@ class App{
                   <tr>
                     <th scope="row">${key}</th>
                     <td>${value}</td>
-                    <td style="cursor: pointer">🗑️</td>
+                    <td style="cursor: pointer" onclick= "app.delete('${key}')">
+                    🗑️
+                    </td>
                   </tr>`;
         return html;
     }
@@ -47,6 +52,19 @@ class App{
         listValues.innerHTML= '';
         listValues.insertAdjacentHTML('beforeend', allValues)
     }
+
+    resetTable(){
+        const listValues = document.getElementById('listValues');
+        listValues.innerHTML = '<td colspan="3"> No data Available </td>';
+    }
+
+    delete(key){
+        if(confirm("Are you Sure ?? ")){
+            window.localStorage.removeItem(key);
+            this.listValues();
+        }
+    }
+
 }
 
-new App();
+const app = new App();
