@@ -23,11 +23,9 @@ class App{
     }
 
     listValues(){
+        console.log("Listing data...");
         const ls = window.localStorage;
-        const lsKeys = [];
-        for (let i=0; i < ls.length; i++){
-            lsKeys.push(localStorage.key(i));
-        }
+        const lsKeys = Object.keys(ls);
         console.log(lsKeys);
     }
 }
