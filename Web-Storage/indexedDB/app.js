@@ -1,3 +1,5 @@
+import {get, set} from 'https://cdn.jsdelivr.net/npm/idb-keyval@6.2.1/dist/compat.min.js';
+
 class App{
     constructor(){
         this.initializaForm();
@@ -19,6 +21,7 @@ class App{
 
     save({key, value}) {
         console.log("saiving data...");
+        set(key,value);
     }
 
     listValues(){
@@ -29,8 +32,8 @@ class App{
         //     return;
         // }
         // const lsKeys = Object.keys(ls);
-        const allValues = lsKeys.map(this.toHTML).join('');
-        this.addToHTML(allValues);
+        // const allValues = lsKeys.map(this.toHTML).join('');
+        // this.addToHTML(allValues);
     }
 
     toHTML(key){
