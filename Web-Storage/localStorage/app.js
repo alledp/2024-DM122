@@ -12,6 +12,7 @@ class App{
             this.save({key: form.key.value, value: form.keyValue.value});
             this.listValues();
             form.reset();
+            form.key.disabled = false;
             form.key.focus();
         });
     }
@@ -69,12 +70,16 @@ class App{
     }
 
     edit(key){
-        console.log(`Clicked to edit ${key}`);
+        console.log(`Editing the Key: ${key}`);
+        const form = document.querySelector('form');
+        const value = window.localStorage.getItem(key);
+        form.key.disabled = true;
+        form.key.value = key;
+        form.keyValue.value = value;
     }
 
 }
 
-// TODO edit Values : fill the form after the value and save
 // TODO use html5 dialog instead of confirm
 
 const app = new App();
