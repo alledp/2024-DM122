@@ -38,7 +38,7 @@ class App{
         const value = window.localStorage.getItem(key);
         const html = `
                   <tr>
-                    <th scope="row">${key}</th>
+                    <th scope="row" onclick="app.edit('${key}')">${key}</th>
                     <td>${value}</td>
                     <td style="cursor: pointer" onclick= "app.delete('${key}')">
                     🗑️
@@ -63,6 +63,10 @@ class App{
             window.localStorage.removeItem(key);
             this.listValues();
         }
+    }
+
+    edit(key){
+        console.log(`Clicked to edit ${key}`);
     }
 
 }
