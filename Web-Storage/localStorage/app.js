@@ -8,6 +8,8 @@ class App{
         form.addEventListener('submit', (event) => {
             event.preventDefault();
             console.log('form submitted');
+            form.reset();
+            form.key.focus();
         });
     }
 }
