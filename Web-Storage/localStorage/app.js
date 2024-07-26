@@ -14,9 +14,10 @@ class App{
         });
     }
 
-    save(data) {
+    save({key, value}) {
         console.log("saiving data...");
-        console.log(data);
+        console.log(key, value);
+        window.localStorage.setItem(key, value);
     }
 }
 
