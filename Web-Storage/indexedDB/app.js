@@ -1,4 +1,4 @@
-import {get, set} from 'https://cdn.jsdelivr.net/npm/idb-keyval@6.2.1/dist/compat.min.js';
+import {get, set, entries} from 'https://cdn.jsdelivr.net/npm/idb-keyval@6.2.1/dist/compat.min.js';
 
 class App{
     constructor(){
@@ -8,36 +8,36 @@ class App{
 
     initializaForm(){
         const form = document.querySelector('form');
-        form.addEventListener('submit', (event) => {
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
             console.log('form submitted');
-            //this.save({key: form.key.value, value: form.keyValue.value});
-            //this.listValues();
+            await this.save({key: form.key.value, value: form.keyValue.value});
+            this.listValues();
             form.reset();
             form.key.disabled = false;
             form.key.focus();
         });
     }
 
-    save({key, value}) {
+    async save({key, value}) {
         console.log("saiving data...");
-        set(key,value);
+        return set(key,value).then(() => console.log("Saving Data"));
     }
 
-    listValues(){
+    async listValues(){
         console.log("Listing data...");
-        // const ls = window.localStorage;
-        // if(!ls.length) {
-        //     this.resetTable();
-        //     return;
-        // }
-        // const lsKeys = Object.keys(ls);
-        // const allValues = lsKeys.map(this.toHTML).join('');
-        // this.addToHTML(allValues);
+        const keyValueList = await entries();
+        if(!keyValueList.length) {
+            this.resetTable();
+            return;
+        }
+        console.log(keyValueList);
+        const allValues = keyValueList.map(this.toHTML).join('');
+        this.addToHTML(allValues);
     }
 
-    toHTML(key){
-        const value = window.localStorage.getItem(key);
+    toHTML(entry){
+        const [key, value] = entry;
         const html = `
                   <tr>
                     <th scope="row" >${key}</th>
@@ -70,10 +70,10 @@ class App{
         }
     }
 
-    edit(key){
+    async edit(key){
         console.log(`Editing the Key: ${key}`);
         const form = document.querySelector('form');
-        const value = window.localStorage.getItem(key);
+        const value = await get(key);
         form.key.disabled = true;
         form.key.value = key;
         form.keyValue.value = value;
@@ -84,3 +84,6 @@ class App{
 // TODO use html5 dialog instead of confirm
 
 const app = new App();
+
+//This is ugly, try to avoid it.
+window.app = app;
