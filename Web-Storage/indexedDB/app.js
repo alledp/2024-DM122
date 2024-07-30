@@ -1,4 +1,4 @@
-import {get, set, entries} from 'https://cdn.jsdelivr.net/npm/idb-keyval@6.2.1/dist/compat.min.js';
+import {get, set, entries, del} from 'https://cdn.jsdelivr.net/npm/idb-keyval@6.2.1/dist/compat.min.js';
 
 class App{
     constructor(){
@@ -63,10 +63,10 @@ class App{
         listValues.innerHTML = '<td colspan="4"> No data Available </td>';
     }
 
-    delete(key){
+    async delete(key){
         if(confirm("Are you Sure ?? ")){
-            //window.localStorage.removeItem(key);
-            //this.listValues();
+            await del(key);
+            this.listValues();
         }
     }
 
