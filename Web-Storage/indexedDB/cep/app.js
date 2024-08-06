@@ -17,26 +17,37 @@ async function extractCEPsOnly(){
 async function fetchCEPData (cep) {
     const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
     const data = await response.json();
-    console.log('response data: ', data);
+    //console.log('response data: ', data);
     return data;
 }
 
+function cepFactory(cepData){
+    return {
+        zipCode: cepData.cep.replace("-", ""),
+        uf: cepData.uf,
+        location: cepData.localidade,
+        publicPlace: cepData.logradouro,
+        neighborhood: cepData.bairro,
+        phoneCode: cepData.ddd,
+        };
+}
+
+console.time('fetch data');
 const cepList = await extractCEPsOnly();
-console.log(cepList[0]);
-const cepData = await fetchCEPData(cepList[0]);
-console.log(cepData);
+const promiseList = await Promise.allSettled(cepList.map(fetchCEPData));
+const cepListData = promiseList
+                    .filter((pl) => pl.status === 'fulfilled')
+                    .map((pl) => pl.value);
+const cepMappedList = cepListData.map(cepFactory);
+console.log(cepMappedList[0]);
+console.timeEnd('fetch data');
 
-// const db = new Dexie('zipCodeDatabase');
+const db = new Dexie('zipCodeDatabase');
 
-// db.version(1).stores({
-//     zipCode: '++id,cep',
-// });
+db.version(1).stores({
+    zipCode: '++id,zipCode,location',
+});
 
-// db.zipCode.add({
-//     zipCode: data.cep.replace("-", ""),
-//     uf: data.uf,
-//     location: data.localidade,
-//     publicPlace: data.logradouro,
-//     neighborhood: data.bairro,
-//     phoneCode: data.ddd,
-// });
+console.time('Saving IndexedDB...');
+await db.zipCode.bulkPut(cepMappedList);
+console.timeEnd('Saving IndexedDB...');
