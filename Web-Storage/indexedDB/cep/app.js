@@ -13,6 +13,7 @@ db.zipCode.add({
     zipCode: data.cep.replace("-", ""),
     uf: data.uf,
     location: data.localidade,
+    publicPlace: data.logradouro,
     neighborhood: data.bairro,
     phoneCode: data.ddd,
 });
