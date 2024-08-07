@@ -1,5 +1,3 @@
-//import { installData } from "./install-data.js";
-
 const linkToInstall = document.querySelector("a[href='#']");
 linkToInstall.addEventListener('click', async () => {
     console.log('install data...');
@@ -7,9 +5,21 @@ linkToInstall.addEventListener('click', async () => {
     alert('Will install');
 });
 
+async function getCepData(zipCode){
+    const {fetchCEPData, cepFactory} = await import ('./install-data.js');
+    const {default: Dexie} = await import ('https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm');
+    const db = new Dexie ('zipCodeDatabase');
+    db.version(2).stores({
+        zipCode: '&zipCode,location',
+    });
+    const cepData = await db.zipCode.get({ zipCode });
+    console.log(cepData);
+}
+
 const form = document.querySelector('form');
 form.addEventListener('submit', () => {
-    alert('Im Here!!');
+    //alert(form.cep.value);
+    getCepData(form.cep.value);
 });
 
 //const button = document.querySelector('button');
@@ -29,3 +39,7 @@ form.addEventListener('submit', () => {
 //     await installData();
 //     button.removeAttribute('aria-busy');
 // });
+
+// TODO: Improve this Code.
+// TODO: Fill the Table.
+// TODO: If not found in the indexedDB fetch from the network and save into the table.

@@ -12,7 +12,7 @@ async function extractCEPsOnly(){
 // extractCEPsOnly();
 // console.timeEnd('Extracting CEP');
 
-async function fetchCEPData (cep) {
+export async function fetchCEPData (cep) {
     await new Promise((resolve) => setTimeout(resolve, 400));
     //const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
     const response = await fetch(`https://brasilapi.com.br/api/cep/v1/${cep}`);
@@ -20,7 +20,7 @@ async function fetchCEPData (cep) {
     return data;
 }
 
-function cepFactory(cepData){
+export function cepFactory(cepData){
     return {
             zipCode: cepData.cep.replace("-", ""),
             uf: cepData.uf || cepData.state,
@@ -44,7 +44,7 @@ export async function installData() {
     const onlyDataWithCEP = (cepData) => !!cepData.cep;
     const cepMappedList = cepListData.filter(onlyDataWithCEP).map(cepFactory);
 
-    const {default: Dixie} = await import ('https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm');
+    const {default: Dexie} = await import ('https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm');
     const db = new Dexie('zipCodeDatabase');
 
     db.version(2).stores({
