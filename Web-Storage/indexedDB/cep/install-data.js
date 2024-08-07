@@ -1,5 +1,3 @@
-import Dexie from 'https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm';
-
 async function extractCEPsOnly(){
     const response = await fetch('./CEPs.txt');
     const textData = await response.text();
@@ -15,39 +13,43 @@ async function extractCEPsOnly(){
 // console.timeEnd('Extracting CEP');
 
 async function fetchCEPData (cep) {
-    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    //const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const response = await fetch(`https://brasilapi.com.br/api/cep/v1/${cep}`);
     const data = await response.json();
-    //console.log('response data: ', data);
     return data;
 }
 
 function cepFactory(cepData){
     return {
-        zipCode: cepData.cep.replace("-", ""),
-        uf: cepData.uf,
-        location: cepData.localidade,
-        publicPlace: cepData.logradouro,
-        neighborhood: cepData.bairro,
-        phoneCode: cepData.ddd,
+            zipCode: cepData.cep.replace("-", ""),
+            uf: cepData.uf || cepData.state,
+            location: cepData.localidade || cepData.city,
+            publicPlace: cepData.logradouro || cepData.street,
+            neighborhood: cepData.bairro || cepData.neighborhood,
+            phoneCode: cepData.ddd || '',
         };
 }
 
 export async function installData() {
     const cepList = await extractCEPsOnly();
+    //const cepListv2 = [cepList[0], cepList[2]];
+    // const cepData = await fetchCEPData(cepList[0]);
+    // const cepMapped = cepFactory(cepData);
+    // console.log(cepMapped);
     const promiseList = await Promise.allSettled(cepList.map(fetchCEPData));
     const onlyFulfilled = (result) => result.status === 'fulfilled';
     const onlyValues = (result) => result.value;
     const cepListData = promiseList.filter(onlyFulfilled).map(onlyValues);
-    const cepMappedList = cepListData.map(cepFactory);
-    console.log(cepMappedList[0]);
+    const onlyDataWithCEP = (cepData) => !!cepData.cep;
+    const cepMappedList = cepListData.filter(onlyDataWithCEP).map(cepFactory);
 
-
+    const {default: Dixie} = await import ('https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm');
     const db = new Dexie('zipCodeDatabase');
 
     db.version(2).stores({
         zipCode: '&zipCode,location',
     });
-
 
     return db.zipCode.bulkPut(cepMappedList);
 }
