@@ -44,7 +44,7 @@ export async function installData() {
     const onlyDataWithCEP = (cepData) => !!cepData.cep;
     const cepMappedList = cepListData.filter(onlyDataWithCEP).map(cepFactory);
 
-    const {getZipCodeDatabase} = await import ('./database.js');
+    const {default: getZipCodeDatabase} = await import ('./database.js');
     const db = await getZipCodeDatabase();
 
     return db.zipCode.bulkPut(cepMappedList);
