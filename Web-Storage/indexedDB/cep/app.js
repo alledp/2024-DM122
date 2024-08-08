@@ -9,11 +9,15 @@ linkToInstall.addEventListener('click', async () => {
 
 async function getCepData(zipCode){
     const db = await getZipCodeDatabase();
-    const zipCodeData = await db.zipCode.get({ zipCode });
+    let zipCodeData = await db.zipCode.get(zipCode);
+    if(zipCodeData) return zipCodeData;
+    const { getFromNetwork } = await import ('./install-data.js');
+    zipCodeData = await getFromNetwork(zipCode);
     return zipCodeData;
 }
 
 function fillTable(zipCodeData){
+    console.log(zipCodeData);
     //This is necessary because we don't have the phone number for now
     delete zipCodeData.phoneCode;
     const addToTheTable = (key) => {
