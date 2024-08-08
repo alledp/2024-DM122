@@ -44,12 +44,5 @@ export async function installData() {
     const onlyDataWithCEP = (cepData) => !!cepData.cep;
     const cepMappedList = cepListData.filter(onlyDataWithCEP).map(cepFactory);
 
-    const {default: Dexie} = await import ('https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm');
-    const db = new Dexie('zipCodeDatabase');
-
-    db.version(2).stores({
-        zipCode: '&zipCode,location',
-    });
-
     return db.zipCode.bulkPut(cepMappedList);
 }

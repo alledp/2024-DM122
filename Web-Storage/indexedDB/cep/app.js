@@ -1,3 +1,5 @@
+import getZipCodeDatabase from './database.js';
+
 const linkToInstall = document.querySelector("a[href='#']");
 linkToInstall.addEventListener('click', async () => {
     console.log('install data...');
@@ -6,12 +8,7 @@ linkToInstall.addEventListener('click', async () => {
 });
 
 async function getCepData(zipCode){
-    const {fetchCEPData, cepFactory} = await import ('./install-data.js');
-    const {default: Dexie} = await import ('https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm');
-    const db = new Dexie ('zipCodeDatabase');
-    db.version(2).stores({
-        zipCode: '&zipCode,location',
-    });
+    const db = await getZipCodeDatabase();
     const zipCodeData = await db.zipCode.get({ zipCode });
     return zipCodeData;
 }
