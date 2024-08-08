@@ -12,14 +12,19 @@ async function getCepData(zipCode){
     db.version(2).stores({
         zipCode: '&zipCode,location',
     });
-    const cepData = await db.zipCode.get({ zipCode });
-    console.log(cepData);
+    const zipCodeData = await db.zipCode.get({ zipCode });
+    return zipCodeData;
+}
+
+function fillTable(zipCodeData){
+    Object.keys(zipCodeData).forEach((key) => console.log(key));
 }
 
 const form = document.querySelector('form');
-form.addEventListener('submit', () => {
+form.addEventListener('submit', async () => {
     //alert(form.cep.value);
-    getCepData(form.cep.value);
+    const zipCodeData = await getCepData(form.cep.value);
+    fillTable(zipCodeData)
 });
 
 //const button = document.querySelector('button');
