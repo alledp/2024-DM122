@@ -1,10 +1,11 @@
-import getZipCodeDatabase from './database.js';
+import getZipCodeDatabase from './helpers/database.js';
+import registerServiceWorker from './helpers/install-sw.js';
 
 async function getCepData(zipCode){
     const db = await getZipCodeDatabase();
     let zipCodeData = await db.zipCode.get(zipCode);
     if(zipCodeData) return zipCodeData;
-    const { getFromNetwork } = await import ('./install-data.js');
+    const { getFromNetwork } = await import ('./install-data/index.js');
     zipCodeData = await getFromNetwork(zipCode);
     return zipCodeData;
 }
@@ -24,7 +25,7 @@ function fillTable(zipCodeData){
 const linkToInstall = document.querySelector("a[href='#']");
 linkToInstall.addEventListener('click', async () => {
     console.log('install data...');
-    const {installData} = await import ('./install-data.js');
+    const {installData} = await import ('./install-data/index.js');
     alert('Will install');
 });
 
@@ -43,24 +44,4 @@ form.addEventListener('submit', async (event) => {
     fillTable(zipCodeData)
 });
 
-//const button = document.querySelector('button');
-
-// button.addEventListener('click', async () => {
-//     console.log('Install data...');
-//     button.disabled = true;
-//     button.setAttribute('aria-busy', true);
-//     await installData();
-//     button.removeAttribute('aria-busy');
-// });
-
-// button.addEventListener('click', async () => {
-//     console.log('Install data...');
-//     button.disabled = true;
-//     button.setAttribute('aria-busy', true);
-//     await installData();
-//     button.removeAttribute('aria-busy');
-// });
-
-// TODO: Improve this Code.
-// TODO: Fill the Table.
-// TODO: If not found in the indexedDB fetch from the network and save into the table.
+registerServiceWorker();
