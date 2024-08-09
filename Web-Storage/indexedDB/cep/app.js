@@ -28,19 +28,19 @@ linkToInstall.addEventListener('click', async () => {
     alert('Will install');
 });
 
+function setLoading(isLoading){
+    const submitButton = document.querySelector("button[type='submit']");
+    submitButton.setAttribute('aria-busy', isLoading);
+    submitButton.disabled = isLoading;
+}
 
 const form = document.querySelector('form');
-const submitButton = document.querySelector("button[type='submit']");
-form.addEventListener('submit', async () => {
-    //alert(form.cep.value);
-    //add loading bar
-    submitButton.setAttribute('aria-busy', true);
-    submitButton.disabled = true;
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    setLoading(true);
     const zipCodeData = await getCepData(form.cep.value.replace('-', ''));
-    submitButton.setAttribute('aria-busy', false);
-    submitButton.disabled = false;
+    setLoading(false);
     fillTable(zipCodeData)
-    //remove loading bar
 });
 
 //const button = document.querySelector('button');
