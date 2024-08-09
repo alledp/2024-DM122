@@ -1,12 +1,5 @@
 import getZipCodeDatabase from './database.js';
 
-const linkToInstall = document.querySelector("a[href='#']");
-linkToInstall.addEventListener('click', async () => {
-    console.log('install data...');
-    const {installData} = await import ('./install-data.js');
-    alert('Will install');
-});
-
 async function getCepData(zipCode){
     const db = await getZipCodeDatabase();
     let zipCodeData = await db.zipCode.get(zipCode);
@@ -26,14 +19,28 @@ function fillTable(zipCodeData){
         tdElement.textContent = zipCodeData[key];
     } 
     Object.keys(zipCodeData).forEach(addToTheTable);
-
 }
 
+const linkToInstall = document.querySelector("a[href='#']");
+linkToInstall.addEventListener('click', async () => {
+    console.log('install data...');
+    const {installData} = await import ('./install-data.js');
+    alert('Will install');
+});
+
+
 const form = document.querySelector('form');
+const submitButton = document.querySelector("button[type='submit']");
 form.addEventListener('submit', async () => {
     //alert(form.cep.value);
+    //add loading bar
+    submitButton.setAttribute('aria-busy', true);
+    submitButton.disabled = true;
     const zipCodeData = await getCepData(form.cep.value.replace('-', ''));
+    submitButton.setAttribute('aria-busy', false);
+    submitButton.disabled = false;
     fillTable(zipCodeData)
+    //remove loading bar
 });
 
 //const button = document.querySelector('button');
