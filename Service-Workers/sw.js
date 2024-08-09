@@ -13,6 +13,12 @@ self.addEventListener('activate', () => {
 
 self.addEventListener('fetch', (event) => {
     console.log(`[Service Worker] fetch event lifecyvle!`);
+    const url = new URL(event.request.url);
+    console.log(url.pathname, );
+
+    if(url.pathname === '/2024-DM122/Service-Workers/images/dog.svg'){
+        event.respondWith(fetch('/2024-DM122/Service-Workers/images/cat.svg'));
+    }
     console.log(event.request.url);
     event.respondWith(fetch(event.request));
 });
