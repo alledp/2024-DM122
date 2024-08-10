@@ -6,7 +6,8 @@ self.addEventListener('install', (event) => {
     self.skipWaiting(); // don't wait for the installation, just activate it.
 });
 
-self.addEventListener('activate', () => {
+self.addEventListener('activate', (event) => {
+    event.waitUntil(cacheCleanup(0));
     console.log(`[Service Worker] active event lifecyvle!`);
     return self.clients.claim(); //Claim All tabs
 });
@@ -36,6 +37,14 @@ async function installStaticAccess(){
                 '/2024-DM122/Service-Workers/images/dog.svg', 
                 '/2024-DM122/Service-Workers/images/cat.svg']))
 }
+
+async function cacheCleanup() {
+    const cacheKeys = await caches.keys();
+    const outdatedCache = (cacheKey) => cacheKey !== CACHE_VERSION_KEY;
+    const purge = (cacheKey) => caches.delete(cacheKey);
+    cacheKeys.filter(outdatedCache).forEach(purge);
+    return true;
+  }
 
 async function cacheFirst(request){
     const cache = await caches.open(CACHE_VERSION_KEY);
