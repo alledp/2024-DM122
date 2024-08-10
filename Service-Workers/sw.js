@@ -23,19 +23,23 @@ self.addEventListener('fetch', async (event) => {
     event.respondWith(cacheFirst(event.request));
 });
 
-const CACHE_VERSION_KEY = 'sw-cache-v1';
+const CACHE_VERSION_KEY = 'sw-cache-v2';
 
 async function installStaticAccess(){
     return caches
         .open(CACHE_VERSION_KEY)
         .then((cache) => 
             cache.addAll(  [
-                '/',
-                '/2024-DM122/Service-Workers/index.html', 
                 'https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.min.css',
-                '/2024-DM122/Service-Workers/app.js',
-                '/2024-DM122/Service-Workers/images/dog.svg', 
-                '/2024-DM122/Service-Workers/images/cat.svg']))
+                'https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm',
+                './',
+                '/2024-DM122/Service-Workers/',
+                '/2024-DM122/Service-Workers/index.html', 
+                '/2024-DM122/Service-Workers/helpers/database.js',
+                '/2024-DM122/Service-Workers/helpers/install-sw.js',
+                '/2024-DM122/Service-Workers/install-data/index.js',
+                '/2024-DM122/Service-Workers/app.js'
+            ]))
 }
 
 async function cacheCleanup() {
