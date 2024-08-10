@@ -7,10 +7,15 @@ self.addEventListener('install', (event) => {
         caches
         .open('sw-cache-v1')
         .then(async (cache) => 
-            cache.put('/2024-DM122/Service-Workers/images/dog.svg',await fetch('/2024-DM122/Service-Workers/images/cat.svg'))
-        )
+                cache.addAll(  [
+                    '/',
+                    '/2024-DM122/Service-Workers/index.html', 
+                    'https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.min.css',
+                    '/2024-DM122/Service-Workers/app.js',
+                    '/2024-DM122/Service-Workers/images/dog.svg', 
+                    '/2024-DM122/Service-Workers/images/cat.svg']))
     );
-    //self.skipWaiting(); // don't wait for the installation, just activate it.
+    self.skipWaiting(); // don't wait for the installation, just activate it.
 });
 
 self.addEventListener('activate', () => {
@@ -26,5 +31,23 @@ self.addEventListener('fetch', async (event) => {
     //     event.respondWith(fetch('/2024-DM122/Service-Workers/images/cat.svg'));
     // }
     const response = await caches.match(event.request.url);
-    event.respondWith(response && fetch(event.request));
+    event.respondWith(cacheFirst(event.request));
 });
+
+async function cacheFirst(request){
+    const cache = await caches.open('sw-cache-v1');
+    const response = await cache.match(requestUrl);
+    if(response){
+        return response;
+    }
+    console.log('URL: NOT IN THE CACHE', request.url);
+    try {
+        const networkResponse = await fetch(request);
+        return networkResponse;
+    } catch (error) {
+        return new Response(`Network Error Happened: ${error}`, {
+            status: 408,
+            headers: {'Content-Type': 'text/plain'},
+        });
+    }
+}
