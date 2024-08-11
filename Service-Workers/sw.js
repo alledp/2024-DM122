@@ -23,7 +23,7 @@ self.addEventListener('fetch', async (event) => {
     event.respondWith(cacheFirst(event.request));
 });
 
-const CACHE_VERSION_KEY = 'sw-cache-v2';
+const CACHE_VERSION_KEY = 'sw-cache-v6';
 
 async function installStaticAccess(){
     return caches
@@ -32,8 +32,10 @@ async function installStaticAccess(){
             cache.addAll(  [
                 'https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.min.css',
                 'https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm',
-                './',
-                '/2024-DM122/Service-Workers/',
+                '/2024-DM122/Service-Workers/images/zipcode.jpg',
+                '/2024-DM122/Service-Workers/images/favicon.ico',
+                '/2024-DM122/Service-Workers/images/favicon-16x16.png',
+                '/2024-DM122/Service-Workers/images/favicon-32x32.png',
                 '/2024-DM122/Service-Workers/index.html', 
                 '/2024-DM122/Service-Workers/helpers/database.js',
                 '/2024-DM122/Service-Workers/helpers/install-sw.js',
