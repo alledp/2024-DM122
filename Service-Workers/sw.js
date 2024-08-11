@@ -1,27 +1,21 @@
 // console.log('Im a Kind of a Proxy!! 😁');
 // console.log(self);
 self.addEventListener('install', (event) => {
-    console.log(`[Service Worker] install event lifecyvle!`);
-    event.waitUntil(installStaticAccess());
-    self.skipWaiting(); // don't wait for the installation, just activate it.
-});
-
-self.addEventListener('activate', (event) => {
-    event.waitUntil(cacheCleanup(0));
-    console.log(`[Service Worker] active event lifecyvle!`);
-    return self.clients.claim(); //Claim All tabs
-});
-
-self.addEventListener('fetch', async (event) => {
-    console.log(`[Service Worker] fetch event lifecyvle!`);
-    // const url = new URL(event.request.url);
-    // console.log(url.pathname, );
-    // if(url.pathname === '/2024-DM122/Service-Workers/images/dog.svg'){
-    //     event.respondWith(fetch('/2024-DM122/Service-Workers/images/cat.svg'));
-    // }
-    const response = await caches.match(event.request.url);
+    console.log(`[Service Worker] install event lifecycle!!`);
+    self.skipWaiting(); // don't wait for installation just activate it
+    event.waitUntil(installStaticAssets());
+  });
+  
+  self.addEventListener('activate', (event) => {
+    console.log(`[Service Worker] activate event lifecycle!`);
+    event.waitUntil(cacheCleanup());
+    return self.clients.claim(); // claim all tabs
+  });
+  
+  self.addEventListener('fetch', async (event) => {
+    console.log(`[Service Worker] fetch event lifecycle!`);
     event.respondWith(cacheFirst(event.request));
-});
+  });
 
 const CACHE_VERSION_KEY = 'sw-cache-v6';
 
@@ -51,21 +45,21 @@ async function cacheCleanup() {
     cacheKeys.filter(outdatedCache).forEach(purge);
     return true;
   }
-
-async function cacheFirst(request){
+  
+  async function cacheFirst(request) {
     const cache = await caches.open(CACHE_VERSION_KEY);
-    const response = await cache.match(requestUrl);
-    if(response){
-        return response;
+    const response = await cache.match(request);
+    if (response) {
+      return response;
     }
-    console.log('URL: NOT IN THE CACHE', request.url);
+    console.log('URL not in the cache: ', request.url);
     try {
-        const networkResponse = await fetch(request);
-        return networkResponse;
+      const networkResponse = await fetch(request);
+      return networkResponse;
     } catch (error) {
-        return new Response(`Network Error Happened: ${error}`, {
-            status: 408,
-            headers: {'Content-Type': 'text/plain'},
-        });
+      return new Response(`Network error happened: ${error}`, {
+        status: 408,
+        headers: { 'Content-Type': 'text/plain' },
+      });
     }
-}
+  }
