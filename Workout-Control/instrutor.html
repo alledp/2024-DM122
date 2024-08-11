@@ -32,6 +32,13 @@
                     required
                   />
                   <input
+                    id="serie"
+                    placeholder="Series"
+                    aria-label="serie"
+                    autocomplete="off"
+                    required
+                  />
+                  <input
                     id="repeticoes"
                     placeholder="Repetições"
                     aria-label="repeticoes"
@@ -51,14 +58,15 @@
         </article>
         <article>
             <h2>Workout</h2>
-            <div class="tab">
-              <button id="segunda" onclick="openCity(event, 'London')">Segunda</button>
-              <button id="terca" onclick="openCity(event, 'Paris')">Terça</button>
-              <button id="quarta" onclick="openCity(event, 'Tokyo')">Quarta</button>
-              <button id="quinta" onclick="openCity(event, 'London')">Quinta</button>
-              <button id="sexta" onclick="openCity(event, 'Paris')">Sexta</button>
-              <button id="sabado" onclick="openCity(event, 'Tokyo')">Sábado</button>
-            </div>
+              <select id="selectGroup" aria-label="Select" required>
+                <option selected disabled value="">Grupo Muscular</option>
+                <option>Peito</option>
+                <option>Costa</option>
+                <option>Perna</option>
+                <option>Ombro</option>
+                <option>Biceps e Triceps</option>false
+              </select>
+              <button id="searchButton" type="button">buscar</button>
             <div>
               <table>
                 <thead>
