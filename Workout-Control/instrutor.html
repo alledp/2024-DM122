@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Tasks</title>
+    <!-- Fluid viewport --> 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.min.css" />
+<script type="module" src="app.js" defer></script>
+</head>
+<body>
+    <main>
+        <section>
+            <h1>INSTRUTOR</h1>
+        </section>
+        <article>
+            <form onsubmit= "return false" >
+                <fieldset class="grid">
+                  <input 
+                    id="grupoMuscular"
+                    placeholder="Grupo Muscular"
+                    aria-label="grupoMuscular"
+                    autocomplete="off"
+                    autofocus
+                    required
+                  />
+                  <input
+                    id="exercicio"
+                    placeholder="Exercicio"
+                    aria-label="exercicio"
+                    autocomplete="off"
+                    required
+                  />
+                  <input
+                    id="repeticoes"
+                    placeholder="Repetições"
+                    aria-label="repeticoes"
+                    autocomplete="off"
+                    required
+                  />
+                  <input
+                    id="peso"
+                    placeholder="Peso (kg)"
+                    aria-label="peso"
+                    autocomplete="off"
+                    required
+                  />
+                  <button type="submit">Save</button>
+                </fieldset>
+              </form>
+        </article>
+        <article>
+            <h2>Workout</h2>
+            <div class="tab">
+              <button id="segunda" onclick="openCity(event, 'London')">Segunda</button>
+              <button id="terca" onclick="openCity(event, 'Paris')">Terça</button>
+              <button id="quarta" onclick="openCity(event, 'Tokyo')">Quarta</button>
+              <button id="quinta" onclick="openCity(event, 'London')">Quinta</button>
+              <button id="sexta" onclick="openCity(event, 'Paris')">Sexta</button>
+              <button id="sabado" onclick="openCity(event, 'Tokyo')">Sábado</button>
+            </div>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th id="titleGrupoMuscular" scope="col" colspan="4" style="text-align: center;"> Grupo Muscular: </th>
+                  </tr>
+                  <tr>
+                    <th scope="col">Exercício</th>
+                    <th scope="col">Carga </th>
+                    <th scope="col" colspan="2"> Actions </th>
+                  </tr>
+                </thead>
+                <tbody id="listValues">
+                  <tr>
+                    <td colspan="4"> No data Available </td>
+                  </tr>
+              </table>
+            </div>
+        </article>     
+    </main>
+</body>
+</html>

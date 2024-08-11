@@ -19,13 +19,14 @@ self.addEventListener('install', (event) => {
 
 const CACHE_VERSION_KEY = 'sw-cache-v6';
 
-async function installStaticAccess(){
+async function installStaticAssets(){
     return caches
         .open(CACHE_VERSION_KEY)
         .then((cache) => 
-            cache.addAll(  [
+            cache.addAll([
                 'https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.min.css',
                 'https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm',
+                './',
                 './images/zipcode.jpg',
                 './images/favicon.ico',
                 './images/favicon-16x16.png',

@@ -33,8 +33,7 @@ async function loadPokeImage(pokemon){
     //const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
 
     const endpoint = pokemon.sprites.other['official-artwork'].front_default;
-    const response = 
-        (await fetchFromCache(endpoint) || await fecthFromNetwork(endpoint));
+    const response = (await fetchFromCache(endpoint) || await fecthFromNetwork(endpoint));
     const blob = await response.blob();
     //display image from blob
 
