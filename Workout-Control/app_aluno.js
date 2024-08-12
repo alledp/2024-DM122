@@ -7,14 +7,6 @@ button.addEventListener('click', async (event) => {
     const grupoMuscular = group.options[group.selectedIndex].text
     console.log(`BUSCAR: ${grupoMuscular}`);
 
-    // Find some old friends
-	
-    // const {default: Dexie} = await import ('https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm');
-    //     const db = new Dexie('workoutDatabase');
-    //     db.version(2).stores({
-    //          workout: '++id,grupoMuscular',
-    //     });
-
     const db = await getWorkoutDatabase();
 
     let allGroup = await db.workout.where("grupoMuscular").equals(grupoMuscular).toArray();
@@ -47,8 +39,8 @@ function toHTML(element){
               <tr>
                 <th scope="row" >${exercicio}</th>
                 <td>${series}</td>
-                <td>${repeticoes}</td>
-                <td>${peso}</td>
+                <td>${repeticoes}x</td>
+                <td>${peso} Kg</td>
                 <td style="width: 30px">
                      <span style="cursor: pointer" > ✏️ </span>
                 </td>
