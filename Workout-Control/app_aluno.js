@@ -1,5 +1,7 @@
 import getWorkoutDatabase from './helpers/database.js';
 
+//console.log(await readDefault());
+
 const button = document.getElementById('searchButton');
 
 button.addEventListener('click', async (event) => {
@@ -51,4 +53,20 @@ function toHTML(element){
     return html;
 }
 
+async function readDefault(){
+    const response = await fetch('./DEFAULT.txt');
+    const textData = await response.text();
+    const obj = new Object();
+    const lines = textData.split('\n');
+    obj.grupoMuscular = (line) => line.split(';')[0];
+    // obj.exercicio = (line) => line.split(';')[1];
+    // obj.series = (line) => line.split(';')[2];
+    // obj.repeticoes = (line) => line.split(';')[3];
+    // obj.peso = (line) => line.split(';')[4];
+    const dataList = lines.map(obj.grupoMuscular);
+    return dataList;
+}
+
+//TODO Finish the implementation of DEFAULT.txt
 //TODO Implement the Edit and Delete.
+//TODO ALUNO should be able only to Edit NOT to DELETE.
