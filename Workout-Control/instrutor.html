@@ -16,14 +16,14 @@
         <article>
             <form onsubmit= "return false" >
                 <fieldset class="grid">
-                  <input 
-                    id="grupoMuscular"
-                    placeholder="Grupo Muscular"
-                    aria-label="grupoMuscular"
-                    autocomplete="off"
-                    autofocus
-                    required
-                  />
+                  <select id="selectGroup" aria-label="Select" required>
+                    <option selected disabled value="">Grupo Muscular</option>
+                    <option>Peito</option>
+                    <option>Costa</option>
+                    <option>Perna</option>
+                    <option>Ombro</option>
+                    <option>Biceps e Triceps</option>false
+                  </select>
                   <input
                     id="exercicio"
                     placeholder="Exercicio"
@@ -32,9 +32,9 @@
                     required
                   />
                   <input
-                    id="serie"
+                    id="series"
                     placeholder="Series"
-                    aria-label="serie"
+                    aria-label="series"
                     autocomplete="off"
                     required
                   />
@@ -55,36 +55,6 @@
                   <button type="submit">Save</button>
                 </fieldset>
               </form>
-        </article>
-        <article>
-            <h2>Workout</h2>
-              <select id="selectGroup" aria-label="Select" required>
-                <option selected disabled value="">Grupo Muscular</option>
-                <option>Peito</option>
-                <option>Costa</option>
-                <option>Perna</option>
-                <option>Ombro</option>
-                <option>Biceps e Triceps</option>false
-              </select>
-              <button id="searchButton" type="button">buscar</button>
-            <div>
-              <table>
-                <thead>
-                  <tr>
-                    <th id="titleGrupoMuscular" scope="col" colspan="4" style="text-align: center;"> Grupo Muscular: </th>
-                  </tr>
-                  <tr>
-                    <th scope="col">Exercício</th>
-                    <th scope="col">Carga </th>
-                    <th scope="col" colspan="2"> Actions </th>
-                  </tr>
-                </thead>
-                <tbody id="listValues">
-                  <tr>
-                    <td colspan="4"> No data Available </td>
-                  </tr>
-              </table>
-            </div>
         </article>     
     </main>
 </body>
