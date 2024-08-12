@@ -1,6 +1,6 @@
 # HTML5 Trabalho DM122
 
-## Workout App
+## Workout App (PWA)
 
 Essa Aplicação consiste em um aplicativo para orientar alunos durante o treino na academia.
 
@@ -8,7 +8,12 @@ Essa Aplicação consiste em um aplicativo para orientar alunos durante o treino
 
 O Aplicativo pode ser acessado através do Link - [Workout APP](https://trabalho_alled.surge.sh/)
 
-Infelizmente
+O Aplicativo possui Uma tela com dois botoes, um para o Instrutor adicionar o treino e outro para o Aluno ver o treino do dia de acordo com o grupo muscular.
+
+O Aplicativo funciona online e pode ser instalado em qualquer sistema operacional graças ao PWA.
+
+## Todo
+Infelizmente não consegui implementar a parte do default, portanto os dados precisam ser preenchidos antes de serem lidos.
 
 ## References
 
