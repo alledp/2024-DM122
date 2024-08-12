@@ -29,6 +29,7 @@ async function installStaticAssets(){
                 './images/favicon.ico',
                 './images/favicon-16x16.png',
                 './images/favicon-32x32.png',
+                './DEFAULT.txt',
                 './index.html',
                 './aluno.html',
                 './instrutor.html',
