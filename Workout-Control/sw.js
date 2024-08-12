@@ -25,7 +25,7 @@ async function installStaticAssets(){
                 'https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.min.css',
                 'https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm',
                 './',
-                './images/zipcode.jpg',
+                './images/workout.png',
                 './images/favicon.ico',
                 './images/favicon-16x16.png',
                 './images/favicon-32x32.png',
