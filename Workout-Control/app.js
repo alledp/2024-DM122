@@ -1,3 +1,5 @@
+import getWorkoutDatabase from './helpers/database.js';
+
 const form = document.querySelector('form');
 
 form.addEventListener('submit', async (event) => {
@@ -12,12 +14,7 @@ form.addEventListener('submit', async (event) => {
     obj.repeticoes = form.repeticoes.value;
     obj.peso = form.peso.value;
 
-    const {default: Dexie} = await import ('https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm');
-    const db = new Dexie('workoutDatabase');
-    db.version(2).stores({
-         workout: '++id,grupoMuscular',
-    });
-
+    const db = await getWorkoutDatabase();
     await db.workout.add(obj).then((result) => (console.log('DataSaved!',result)));
 
     console.log("Salvou Ihuul");
@@ -26,20 +23,3 @@ form.addEventListener('submit', async (event) => {
 
     console.log("Fechou o DB");
 });
-
-// const button = document.getElementById('searchButton');
-
-// button.addEventListener('click', async (event) => {
-//     const group = document.getElementById("selectGroup");
-//     console.log(`BUSCAR: ${group.options[group.selectedIndex].text}`);
-
-//     const {default: Dexie} = await import ('https://cdn.jsdelivr.net/npm/dexie@4.0.8/+esm');
-//     const db = new Dexie('workoutDatabase');
-//     db.version(2).stores({
-//          workout: '++id,grupoMuscular',
-//     });
-
-//     await db.workout.add(obj).then((result) => (console.log('DataSaved!',result)));
-
-
-// });
